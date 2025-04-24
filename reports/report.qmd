@@ -374,7 +374,7 @@ SELECT
   ROUND(COUNT(CASE WHEN `Income Group` = 'Upper middle income' THEN 1 END) * 1.0, 1) AS Upper_Middle,
   ROUND(COUNT(CASE WHEN `Income Group` = 'Lower middle income' THEN 1 END) * 1.0, 1) AS Lower_Middle,
   ROUND(COUNT(CASE WHEN `Income Group` = 'Low income' THEN 1 END) * 1.0, 1) AS Low,
-  ROUND(COUNT(CASE WHEN `Income Group` IS NULL OR `Income Group` = '' THEN 1 END) * 1.0, 1) AS Other
+  ROUND(COUNT(*) * 1.0, 1) AS Total
 FROM 
   wdi_country
 GROUP BY 
