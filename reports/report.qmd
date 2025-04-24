@@ -369,19 +369,19 @@ order by
 
 run_sql_and_return_html(cnx,"""
 SELECT
-  COALESCE(`Region`, 'Unknown') AS `Region`,
-  COUNT(CASE WHEN `Income Group` = 'High income' THEN 1 END) AS "High",
-  COUNT(CASE WHEN `Income Group` = 'Upper middle income' THEN 1 END) AS "Upper Middle",
-  COUNT(CASE WHEN `Income Group` = 'Lower middle income' THEN 1 END) AS "Lower Middle",
-  COUNT(CASE WHEN `Income Group` = 'Low income' THEN 1 END) AS "Low",
-  COUNT(CASE WHEN `Income Group` IS NULL OR `Income Group` = '' THEN 1 END) AS "Other",
-  COUNT(*) AS "Total"
+  COALESCE(`Region`, 'Unknown') AS Region,
+  COUNT(CASE WHEN `Income Group` = 'High income' THEN 1 END) AS High,
+  COUNT(CASE WHEN `Income Group` = 'Upper middle income' THEN 1 END) AS Upper_Middle,
+  COUNT(CASE WHEN `Income Group` = 'Lower middle income' THEN 1 END) AS Lower_Middle,
+  COUNT(CASE WHEN `Income Group` = 'Low income' THEN 1 END) AS Low,
+  COUNT(CASE WHEN `Income Group` IS NULL OR `Income Group` = '' THEN 1 END) AS Other,
+  COUNT(*) AS Total
 FROM 
   wdi_country
 GROUP BY 
   COALESCE(`Region`, 'Unknown')
 ORDER BY 
-  `Region`
+  Region
 """)
 ```
 
@@ -649,21 +649,20 @@ WITH income_counts AS (
     COALESCE(NULLIF(`Income Group`, ''), 'Other')
 ),
 total AS (
-  SELECT 
-    COUNT(*) AS total_countries 
-  FROM 
-    wdi_country
+  SELECT COUNT(*) AS total_countries 
+  FROM wdi_country
 )
 SELECT 
   ic.`Income Group`,
   ic.count_per_group AS "Number of Countries",
   t.total_countries AS "Total",
-  ROUND(100.0 * ic.count_per_group / t.total_countries, 2) AS "Percent of Total"
+  ROUND(100.0 * ic.count_per_group / t.total_countries, 1) AS "Percent of Total"
 FROM 
   income_counts ic, total t
 ORDER BY 
   "Number of Countries" DESC
 """)
+
 
 
 ```
