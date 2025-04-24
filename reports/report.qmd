@@ -370,12 +370,12 @@ order by
 run_sql_and_return_html(cnx,"""
 SELECT
   COALESCE(`Region`, 'Unknown') AS Region,
-  COUNT(CASE WHEN `Income Group` = 'High income' THEN 1 END) AS High,
-  COUNT(CASE WHEN `Income Group` = 'Upper middle income' THEN 1 END) AS Upper_Middle,
-  COUNT(CASE WHEN `Income Group` = 'Lower middle income' THEN 1 END) AS Lower_Middle,
-  COUNT(CASE WHEN `Income Group` = 'Low income' THEN 1 END) AS Low,
-  COUNT(CASE WHEN `Income Group` IS NULL OR `Income Group` = '' THEN 1 END) AS Other,
-  COUNT(*) AS Total
+  ROUND(COUNT(CASE WHEN `Income Group` = 'High income' THEN 1 END) * 1.0, 1) AS High,
+  ROUND(COUNT(CASE WHEN `Income Group` = 'Upper middle income' THEN 1 END) * 1.0, 1) AS Upper_Middle,
+  ROUND(COUNT(CASE WHEN `Income Group` = 'Lower middle income' THEN 1 END) * 1.0, 1) AS Lower_Middle,
+  ROUND(COUNT(CASE WHEN `Income Group` = 'Low income' THEN 1 END) * 1.0, 1) AS Low,
+  ROUND(COUNT(CASE WHEN `Income Group` IS NULL OR `Income Group` = '' THEN 1 END) * 1.0, 1) AS Other,
+  ROUND(COUNT(*) * 1.0, 1) AS Total
 FROM 
   wdi_country
 GROUP BY 
